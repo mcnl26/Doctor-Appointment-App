@@ -5,6 +5,9 @@ const doctorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    profilePicture: {
+      type: String,
+    },
     firstName: {
       type: String,
       required: true,
@@ -17,15 +20,15 @@ const doctorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    website: {
-      type: String,
-      required: true,
-    },
     address: {
       type: String,
       required: true,
     },
     specialization: {
+      type: String,
+      required: true,
+    },
+    hospital: {
       type: String,
       required: true,
     },
@@ -38,6 +41,10 @@ const doctorSchema = new mongoose.Schema(
       required: true,
     },
     timings : {
+      type: Array,
+      required: true,
+    },
+    days : {
       type: Array,
       required: true,
     },

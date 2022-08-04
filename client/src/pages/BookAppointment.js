@@ -141,10 +141,10 @@ function BookAppointment() {
                 <b>Fee per Visit : </b>
                 {doctor.feePerCunsultation}
               </p>
-              <p>
+              {/* <p>
                 <b>Website : </b>
                 {doctor.website}
-              </p>
+              </p> */}
               <div className="d-flex flex-column pt-2 mt-2">
                 <DatePicker
                   format="DD-MM-YYYY"

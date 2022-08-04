@@ -1,6 +1,21 @@
-import { Button, Col, Form, Input, Row, TimePicker } from "antd";
+import { Button, Col, Form, Input, Row, TimePicker, DatePicker, Checkbox, Upload } from "antd";
+// import ImgCrop from 'antd-img-crop';
+import Multiselect from 'multiselect-react-dropdown';
 import moment from "moment";
 import React from "react";
+import { CloudUploadOutlined} from '@ant-design/icons';
+
+const daysArr = {
+  options: [{name: 'Sunday', id: 0},{name: 'Monday', id: 1},{name: 'Tuesday', id: 2},{name: 'Wednesday', id: 3},{name: 'Thursday', id: 4},{name: 'Friday', id: 5},{name: 'Saturday', id: 6}]
+};
+
+function onSelect(selectedList, selectedItem) {
+  console.log(selectedList)
+}
+
+function onRemove(selectedList, removedItem) {
+  console.log(selectedList)
+}
 
 function DoctorForm({ onFinish, initivalValues }) {
   return (
@@ -11,8 +26,8 @@ function DoctorForm({ onFinish, initivalValues }) {
         ...initivalValues,
         ...(initivalValues && {
           timings: [
-            moment(initivalValues?.timings[0], "HH:mm"),
-            moment(initivalValues?.timings[1], "HH:mm"),
+            moment(initivalValues?.timings[0], "HH"),
+            moment(initivalValues?.timings[1], "HH"),
           ],
         }),
       }}
@@ -52,16 +67,6 @@ function DoctorForm({ onFinish, initivalValues }) {
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
-            label="Website"
-            name="website"
-            rules={[{ required: true }]}
-          >
-            <Input placeholder="Website" />
-          </Form.Item>
-        </Col>
-        <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item
-            required
             label="Address"
             name="address"
             rules={[{ required: true }]}
@@ -81,6 +86,16 @@ function DoctorForm({ onFinish, initivalValues }) {
             rules={[{ required: true }]}
           >
             <Input placeholder="Specialization" />
+          </Form.Item>
+        </Col>
+        <Col span={8} xs={24} sm={24} lg={8}>
+          <Form.Item
+            required
+            label="Hospital Name"
+            name="hospital"
+            rules={[{ required: true }]}
+          >
+            <Input placeholder="Hospital" />
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
@@ -110,7 +125,22 @@ function DoctorForm({ onFinish, initivalValues }) {
             name="timings"
             rules={[{ required: true }]}
           >
-            <TimePicker.RangePicker format="HH:mm" />
+            <TimePicker.RangePicker format="HH" />
+          </Form.Item>
+        </Col>
+        <Col span={8} xs={24} sm={24} lg={8}>
+          <Form.Item
+            label="Days"
+            name="days"
+            rules={[{ required: true }]}
+          >
+            <Multiselect
+          options={daysArr.options} // Options to display in the dropdown
+          selectedValues={daysArr.selectedValue} // Preselected value to persist in dropdown
+          onSelect={onSelect} // Function will trigger on select event
+          onRemove={onRemove} // Function will trigger on remove event
+          displayValue="name" // Property name to display in the dropdown options
+          />
           </Form.Item>
         </Col>
       </Row>
