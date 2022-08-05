@@ -1,11 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import "../layout.css";
 
 function Doctor({ doctor }) {
   const navigate = useNavigate();
   return (
     <div
-      className="card p-2 cursor-pointer"
+      className="card p-2 cursor-pointer mt-3 card-custom"
       onClick={() => navigate(`/book-appointment/${doctor._id}`)}
     >
       <h1 className="card-title">

@@ -3,6 +3,7 @@ import "../layout.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Badge } from "antd";
+import Logo from "./telekonsulta.png"
 
 function Layout({ children }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -74,11 +75,14 @@ function Layout({ children }) {
   return (
     <div className="main">
       <div className="d-flex layout">
-        <div className="sidebar">
+        <div className={user?.isAdmin ? "sidebarAdmin" : user?.isDoctor ? "sidebarDoctor" : "sidebarUser"}>
           <div className="sidebar-header">
-            <h1 className="logo">SH</h1>
-            <h1 className="role">{role}</h1>
+            <img className="imageLogo" src={Logo}></img>
+            <h1 className="logo">Tele<span className="spanName">Konsulta</span> </h1>
           </div>
+          <p className="role text-white">{role}</p>           
+
+
 
           <div className="menu">
             {menuToBeRendered.map((menu) => {
@@ -108,7 +112,7 @@ function Layout({ children }) {
         </div>
 
         <div className="content">
-          <div className="header">
+          <div className={user?.isAdmin? "headerAdmin" : user?.isDoctor? "header" : "header"}>
             {collapsed ? (
               <i
                 className="ri-menu-2-fill header-action-icon"
@@ -126,10 +130,10 @@ function Layout({ children }) {
                 count={user?.unseenNotifications.length}
                 onClick={() => navigate("/notifications")}
               >
-                <i className="ri-notification-line header-action-icon px-3"></i>
+                <i className="ri-notification-line header-action-icon px-2"></i>
               </Badge>
 
-              <Link className="anchor mx-2" to="/profile">
+              <Link className="anchor mx-2 header-role ms-4" to="/profile">
                 {user?.name}
               </Link>
             </div>
