@@ -1,21 +1,40 @@
-import { Button, Col, Form, Input, Row, TimePicker, DatePicker, Checkbox, Upload } from "antd";
+import { Button, Col, Form, Input, Row, TimePicker, DatePicker, Checkbox, Upload, Select } from "antd";
 // import ImgCrop from 'antd-img-crop';
 import Multiselect from 'multiselect-react-dropdown';
 import moment from "moment";
 import React from "react";
 import { CloudUploadOutlined} from '@ant-design/icons';
 
-const daysArr = {
-  options: [{name: 'Sunday', id: 0},{name: 'Monday', id: 1},{name: 'Tuesday', id: 2},{name: 'Wednesday', id: 3},{name: 'Thursday', id: 4},{name: 'Friday', id: 5},{name: 'Saturday', id: 6}]
+// const daysArr = {
+//   options: [{name: 'Sunday', id: 0},{name: 'Monday', id: 1},{name: 'Tuesday', id: 2},{name: 'Wednesday', id: 3},{name: 'Thursday', id: 4},{name: 'Friday', id: 5},{name: 'Saturday', id: 6}]
+// };
+// const daysAvailable = [0,1,2,3,4,5,6];
+// var daysSelected = [];
+
+// function onSelect(selectedList, selectedItem) {
+//   daysSelected = [];
+//   for (let i = 0; i < selectedList.length; i++) {
+//     daysSelected.push(selectedList[i].id);
+//   }
+//   daysSelected = daysAvailable.filter( ( el ) => !daysSelected.includes( el ) );
+//   console.log(daysSelected);
+// }
+
+const { Option } = Select;
+const daysArr = [
+  <Option key='0'>Sunday</Option>,
+  <Option key='1'>Monday</Option>,
+  <Option key='2'>Tuesday</Option>,
+  <Option key='3'>Wednesday</Option>,
+  <Option key='4'>Thursday</Option>,
+  <Option key='5'>Friday</Option>,
+  <Option key='6'>Saturday</Option>
+];
+
+const handleChange = (value) => {
+  console.log(`selected ${value}`);
 };
 
-function onSelect(selectedList, selectedItem) {
-  console.log(selectedList)
-}
-
-function onRemove(selectedList, removedItem) {
-  console.log(selectedList)
-}
 
 function DoctorForm({ onFinish, initivalValues }) {
   return (
@@ -130,17 +149,22 @@ function DoctorForm({ onFinish, initivalValues }) {
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
+            required
             label="Days"
             name="days"
             rules={[{ required: true }]}
           >
-            <Multiselect
-          options={daysArr.options} // Options to display in the dropdown
-          selectedValues={daysArr.selectedValue} // Preselected value to persist in dropdown
-          onSelect={onSelect} // Function will trigger on select event
-          onRemove={onRemove} // Function will trigger on remove event
-          displayValue="name" // Property name to display in the dropdown options
-          />
+            <Select
+            mode="multiple"
+            allowClear
+            style={{
+              width: '100%',
+            }}
+            placeholder="Please select days available"
+            onChange={handleChange}
+          >
+            {daysArr}
+          </Select>
           </Form.Item>
         </Col>
       </Row>

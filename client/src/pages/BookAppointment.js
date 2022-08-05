@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Input, Row, TimePicker } from "antd";
+import { Button, Col, DatePicker, Form, Input, Row, TimePicker, Radio } from "antd";
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import axios from "axios";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import DoctorForm from "../components/DoctorForm";
 import moment from "moment";
+const { TextArea } = Input;
 
 function BookAppointment() {
   const [isAvailable, setIsAvailable] = useState(false);
@@ -18,6 +19,56 @@ function BookAppointment() {
   const [doctor, setDoctor] = useState(null);
   const params = useParams();
   const dispatch = useDispatch();
+
+  var days_arr = [];
+  var time1;
+  var time2;
+  const daysAvailable = [0,1,2,3,4,5,6];
+  const daysAvailableWord = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var daysString = '';
+
+  const disableTimeAndDate = (timings, days) => {
+    // console.log(timings);
+    // console.log(days);
+    const arrOfNum = days.map(str => {
+      return Number(str);
+    });
+    days_arr = daysAvailable.filter( ( el ) => !arrOfNum.includes( el ) );
+    time1 = moment(timings[0], "HH:mm").format("HH");
+    time2 = moment(timings[1], "HH:mm").format("HH");
+    console.log(time2)
+    for (let i = 0; i < days.length; i++) {
+      if (i < (days.length-1)) {
+        daysString += daysAvailableWord[days[i]] + " | ";
+      } else {
+        daysString += daysAvailableWord[days[i]];
+      }
+    }
+  };
+
+  const disabledDate = (current) => {
+    var tempArr = [];
+    for (let i = 0; i < days_arr.length; i++) {
+        tempArr.push(moment(current).day() === days_arr[i]);
+    }
+    return tempArr.includes(true);
+  };
+
+  const disabledHours = () => {
+    const hours = [];
+    const currentHour = moment().hour();
+
+    // first loop will disable time slots less than the value
+    for (let i = time1 - 1 ; i >= 0; i--) {
+      hours.push(i);
+    }
+    // 2nd loop will disable time slots onwards the value
+    for (let i = time2; i <= 24; i++) {
+      hours.push(i);
+    }
+
+    return hours;
+  };
 
   const getDoctorData = async () => {
     try {
@@ -111,6 +162,7 @@ function BookAppointment() {
     <Layout>
       {doctor && (
         <div>
+          {disableTimeAndDate(doctor.timings, doctor.days)}
           <h1 className="page-title">
             {doctor.firstName} {doctor.lastName}
           </h1>
@@ -127,7 +179,10 @@ function BookAppointment() {
             </Col>
             <Col span={8} sm={24} xs={24} lg={8}>
               <h1 className="normal-text">
-                <b>Timings :</b> {doctor.timings[0]} - {doctor.timings[1]}
+                <b>Days Available:</b> {daysString}
+              </h1>
+              <h1 className="normal-text">
+                <b>Time Slot :</b> {doctor.timings[0]} - {doctor.timings[1]}
               </h1>
               <p>
                 <b>Phone Number : </b>
@@ -141,26 +196,59 @@ function BookAppointment() {
                 <b>Fee per Visit : </b>
                 {doctor.feePerCunsultation}
               </p>
-              {/* <p>
-                <b>Website : </b>
-                {doctor.website}
-              </p> */}
-              <div className="d-flex flex-column pt-2 mt-2">
-                <DatePicker
-                  format="DD-MM-YYYY"
-                  onChange={(value) => {
-                    setDate(moment(value).format("DD-MM-YYYY"));
-                    setIsAvailable(false);
-                  }}
-                />
-                <TimePicker
-                  format="HH:mm"
-                  className="mt-3"
-                  onChange={(value) => {
-                    setIsAvailable(false);
-                    setTime(moment(value).format("HH:mm"));
-                  }}
-                />
+              <Form layout="vertical">
+                <div className="d-flex flex-column pt-2 mt-2">
+                <Form.Item 
+                  required
+                  label= 'Date:'>
+                    <DatePicker
+                    disabledDate={disabledDate}
+                    style={{ width: '100%'}}
+                    format="DD-MM-YYYY"
+                    onChange={(value) => {
+                      setDate(moment(value).format("DD-MM-YYYY"));
+                      setIsAvailable(false);
+                      }}
+                    />
+                </Form.Item>
+                <Form.Item 
+                  required
+                  label= 'Time:'>
+                    <TimePicker
+                    disabledHours={disabledHours}
+                    style={{ width: '100%'}}
+                    format="HH:mm"
+                    className="mt-3"
+                    onChange={(value) => {
+                      setIsAvailable(false);
+                      setTime(moment(value).format("HH:mm"));
+                      }}
+                    />
+                </Form.Item>
+                <Form.Item 
+                  required
+                  label= 'Symptoms:'
+                  name= "symptoms">
+                  <TextArea rows={4} placeholder="Headache, fatigue, nausea, pain, etc..."/>    
+                </Form.Item>
+                <Form.Item 
+                  required
+                  label="Type of Visit:" 
+                  name="typeOfVisit">
+                  <Radio.Group>
+                    <Radio.Button value="new">New</Radio.Button>
+                    <Radio.Button value="revisit">Revisit</Radio.Button>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item 
+                  required
+                  label="Type of Consultation:" 
+                  name="typeOfConsultation">
+                  <Radio.Group>
+                    <Radio.Button value="f2f">Face-to-Face</Radio.Button>
+                    <Radio.Button value="teleconsultation">Teleconsultation</Radio.Button>
+                  </Radio.Group>
+                </Form.Item>
               {!isAvailable &&   <Button
                   className="primary-button mt-3 full-width-button"
                   onClick={checkAvailability}
@@ -176,7 +264,8 @@ function BookAppointment() {
                     Book Now
                   </Button>
                 )}
-              </div>
+                </div>
+              </Form>    
             </Col>
            
           </Row>

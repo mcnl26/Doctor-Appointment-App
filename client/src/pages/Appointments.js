@@ -28,24 +28,11 @@ function Appointments() {
   };
   const columns = [
     {
-        title: "Id",
-        dataIndex: "_id",
-    },
-    {
       title: "Doctor",
       dataIndex: "name",
       render: (text, record) => (
         <span>
           {record.doctorInfo.firstName} {record.doctorInfo.lastName}
-        </span>
-      ),
-    },
-    {
-      title: "Phone",
-      dataIndex: "phoneNumber",
-      render: (text, record) => (
-        <span>
-          {record.doctorInfo.phoneNumber} 
         </span>
       ),
     },
