@@ -27,6 +27,10 @@ function Login() {
     }
   };
 
+  const refreshPage = () => {
+    window.location.reload(false);
+  }
+
   return (
     <div className="authentication">
       <div className="authentication-form card p-3">
@@ -40,7 +44,7 @@ function Login() {
           </Form.Item>
 
           
-          <Button className="primary-button my-2 full-width-button" htmlType="submit">
+          <Button className="primary-button my-2 full-width-button" htmlType="submit" onClick={refreshPage}>
             LOGIN
           </Button>
 
