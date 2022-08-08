@@ -17,6 +17,10 @@ function Login() {
       if (response.data.success) {
         toast.success(response.data.message);
         localStorage.setItem("token", response.data.data);
+        const refreshPage = () => {
+        window.location.reload(false);
+        }
+        refreshPage();        
         navigate("/");
       } else {
         toast.error(response.data.message);
@@ -27,9 +31,7 @@ function Login() {
     }
   };
 
-  // const refreshPage = () => {
-  //   window.location.reload(false);
-  // }
+  
 
   return (
     <div className="authentication">

@@ -154,3 +154,8 @@
     background-color: rgb(97, 255, 250);
 
 }
+
+.btn-hero:hover {
+    background-color: white;
+    color: black !important;
+}
