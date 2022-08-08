@@ -54,7 +54,7 @@ function DoctorsList() {
   }, []);
   const columns = [
     {
-      title: "Name",
+      title: "shviaev",
       dataIndex: "name",
       render: (text, record) => (
         <span>

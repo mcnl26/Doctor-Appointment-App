@@ -17,8 +17,23 @@ function BookAppointment() {
   const [time, setTime] = useState();
   const { user } = useSelector((state) => state.user);
   const [doctor, setDoctor] = useState(null);
+  const [symptoms, setSymptoms] = useState();
+  const [typeOfVisit, setTypeOfVisit] = useState();
+  const [typeOfConsultation, setTypeOfConsult] = useState();
   const params = useParams();
   const dispatch = useDispatch();
+
+  const symptomsUpdate=(event)=>{ // Dealing with name field changes to update our state
+    setSymptoms(event.target.value)
+  }
+
+  const visitUpdate=(event)=>{ // Dealing with name field changes to update our state
+    setTypeOfVisit(event.target.value)
+  }
+
+  const consultUpdate=(event)=>{ // Dealing with name field changes to update our state
+    setTypeOfConsult(event.target.value)
+  }
 
   var days_arr = [];
   var time1;
@@ -103,6 +118,9 @@ function BookAppointment() {
           doctorId: params.doctorId,
           date: date,
           time: time,
+          symptoms: symptoms,
+          typeOfVisit: typeOfVisit,
+          typeOfConsultation: typeOfConsultation,
         },
         {
           headers: {
@@ -135,6 +153,9 @@ function BookAppointment() {
           userInfo: user,
           date: date,
           time: time,
+          symptoms: symptoms,
+          typeOfVisit: typeOfVisit,
+          typeOfConsultation: typeOfConsultation,
         },
         {
           headers: {
@@ -229,13 +250,13 @@ function BookAppointment() {
                   required
                   label= 'Symptoms:'
                   name= "symptoms">
-                  <TextArea rows={4} placeholder="Headache, fatigue, nausea, pain, etc..."/>    
+                  <TextArea rows={4} onChange={symptomsUpdate} placeholder="Headache, fatigue, nausea, pain, etc..."/>
                 </Form.Item>
                 <Form.Item 
                   required
                   label="Type of Visit:" 
                   name="typeOfVisit">
-                  <Radio.Group>
+                  <Radio.Group onChange={visitUpdate}>
                     <Radio.Button value="new">New</Radio.Button>
                     <Radio.Button value="revisit">Revisit</Radio.Button>
                   </Radio.Group>
@@ -244,7 +265,7 @@ function BookAppointment() {
                   required
                   label="Type of Consultation:" 
                   name="typeOfConsultation">
-                  <Radio.Group>
+                  <Radio.Group onChange={consultUpdate}>
                     <Radio.Button value="f2f">Face-to-Face</Radio.Button>
                     <Radio.Button value="teleconsultation">Teleconsultation</Radio.Button>
                   </Radio.Group>

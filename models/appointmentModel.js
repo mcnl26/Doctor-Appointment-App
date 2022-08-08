@@ -25,6 +25,18 @@ const appointmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    symptoms: {
+      type: String,
+      required: true,
+    },
+    typeOfVisit: {
+      type: String,
+      required: true,
+    },
+    typeOfConsultation: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       required: true,

@@ -54,18 +54,9 @@ function DoctorAppointments() {
   };
   const columns = [
     {
-      title: "Id",
-      dataIndex: "_id",
-    },
-    {
       title: "Patient",
       dataIndex: "name",
       render: (text, record) => <span>{record.userInfo.name}</span>,
-    },
-    {
-      title: "Phone",
-      dataIndex: "phoneNumber",
-      render: (text, record) => <span>{record.doctorInfo.phoneNumber}</span>,
     },
     {
       title: "Date & Time",
@@ -74,6 +65,33 @@ function DoctorAppointments() {
         <span>
           {moment(record.date).format("DD-MM-YYYY")}{" "}
           {moment(record.time).format("HH:mm")}
+        </span>
+      ),
+    },
+    {
+      title: "Symptoms",
+      dataIndex: "createdAt",
+      render: (text, record) => (
+        <span>
+          {record.symptoms}
+        </span>
+      ),
+    },
+    {
+      title: "Type of Visit",
+      dataIndex: "createdAt",
+      render: (text, record) => (
+        <span>
+          {record.typeOfVisit}
+        </span>
+      ),
+    },
+    {
+      title: "Type of Consultation",
+      dataIndex: "createdAt",
+      render: (text, record) => (
+        <span>
+          {record.typeOfConsultation}
         </span>
       ),
     },

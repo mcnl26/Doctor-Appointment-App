@@ -46,6 +46,33 @@ function Appointments() {
       ),
     },
     {
+      title: "Symptoms",
+      dataIndex: "createdAt",
+      render: (text, record) => (
+        <span>
+          {record.symptoms}
+        </span>
+      ),
+    },
+    {
+      title: "Type of Visit",
+      dataIndex: "createdAt",
+      render: (text, record) => (
+        <span>
+          {record.typeOfVisit}
+        </span>
+      ),
+    },
+    {
+      title: "Type of Consultation",
+      dataIndex: "createdAt",
+      render: (text, record) => (
+        <span>
+          {record.typeOfConsultation}
+        </span>
+      ),
+    },
+    {
         title: "Status",
         dataIndex: "status",
     }
